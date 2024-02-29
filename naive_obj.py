@@ -1,3 +1,5 @@
+# 775.69 s
+
 import time
 
 from typing import Dict
@@ -9,10 +11,7 @@ class Record:
         self.max = mx
         self.sum = sm
         self.cnt = cnt
-        self.avg = 0
 
-
-MIN, MAX, SUM, COUNT = (0, 1, 2, 3)
 db: Dict[str, Record] = {}
 
 
@@ -44,7 +43,7 @@ def main(path: str) -> None:
 
     print("{", end="")
     for city, vals in sorted(db.items()):
-        print(f"{city}={vals[MIN]:.1f}/{(vals[SUM] / vals[COUNT])}/{vals[MAX]:.1f}", end=", ")
+        print(f"{city}={vals.min:.1f}/{(vals.sum / vals.cnt)}/{vals.max:.1f}", end=", ")
     print("\b\b} ")
 
 

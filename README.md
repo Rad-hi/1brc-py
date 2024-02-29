@@ -23,7 +23,10 @@ $ python --version
 
 Stats:
 
-naive.py: 556.79 s
-naive_obj.py: 
-prod_cons.py: +oo
-many_procs.py: 143.46
+- many_procs.py: `143.46`
+
+- naive.py: `556.79 s`
+
+- naive_obj.py: `454545454`
+
+- prod_cons.py: `+oo`
