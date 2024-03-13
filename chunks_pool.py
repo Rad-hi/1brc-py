@@ -6,18 +6,21 @@ import multiprocessing as mp
 import time
 import os
 
-from typing import Tuple, DefaultDict, List
+from typing import Tuple, DefaultDict, List, Union
+
+Chunks = List[Tuple[str, int, int]]
 
 
 NEWLINE = b'\n'
 MIN, MAX, SUM, COUNT = (0, 1, 2, 3)
 
 
-def empty_list():
+def default_list() -> List[Union[float, int]]:
+    # min, max, sum, count
     return [99.0, -99.0, 0.0, 1]
 
 
-def get_file_chunks(file_path, n_cpu: int = 8) -> List[Tuple[int, int]]:
+def get_file_chunks(file_path: str, n_cpu: int = 8) -> Chunks:
 
     def is_new_line(pos):
         if pos == 0:
@@ -29,7 +32,7 @@ def get_file_chunks(file_path, n_cpu: int = 8) -> List[Tuple[int, int]]:
     file_sz: int = os.stat(file_path).st_size
     chunk_sz: int = file_sz // n_cpu
 
-    chunks: List[Tuple[int, int]] = []
+    chunks: Chunks = []
 
     with open(file_path, "rb") as fp:
 
@@ -51,9 +54,11 @@ def get_file_chunks(file_path, n_cpu: int = 8) -> List[Tuple[int, int]]:
     return chunks
 
 
-def process_chunk(file_path: str, start: int, end: int) -> DefaultDict[str, List[int]]:
+def process_chunk(
+        file_path: str, start: int, end: int
+    ) -> DefaultDict[str, List[Union[float, int]]]:
 
-    res = defaultdict(empty_list)
+    res = defaultdict(default_list)
 
     with open(file_path, 'r') as fp:
         fp.seek(start)
@@ -81,7 +86,7 @@ def process_file(chunks: List[Tuple[int, int]], n_cpu: int = 8):
     with mp.Pool(n_cpu) as p:
         chunk_results = p.starmap(process_chunk, chunks)
 
-        db: DefaultDict[str, List[float]] = defaultdict(empty_list)
+        db: DefaultDict[str, List[float]] = defaultdict(default_list)
         for res in chunk_results:
             for city, vals in res.items():
 

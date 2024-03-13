@@ -9,14 +9,14 @@ WORKERS = 8
 MIN, MAX, SUM, COUNT= (0, 1, 2, 3)
 
 
-def db_updater(e, db, q: SimpleQueue)-> None:
+def db_updater(e, db, q)-> None:
     while True:
         line = q.get()
-        city, val = line[:-3].split(';')
+        city, val = line[:-1].split(';')
         if city not in db:
-            db[city] = [-100, 100, 0, 0, 0.0]
+            db[city] = [99.0, -99.0, 0.0, 1]
 
-        val = int(val)
+        val = float(val)
 
         if val < db[city][MIN]:
             db[city][MIN] = val

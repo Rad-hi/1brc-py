@@ -23,10 +23,10 @@ $ python --version
 
 Stats:
 
-- many_procs.py: `143.46`
+- chunks_pool.py: `143.46` / NVIDIA AGX Orin 32Gb: `75.59 s`
 
 - naive.py: `556.79 s`
 
-- naive_obj.py: `454545454`
+- naive_obj.py: `--`
 
-- prod_cons.py: `+oo`
+- prod_cons.py: `+oo` [also `+oo` RAM consumption]
