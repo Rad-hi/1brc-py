@@ -1,5 +1,5 @@
 # Ref: https://github.com/ifnesi/1brc/blob/main/calculateAverage.py
-# 143.46 s
+# 139.09 s
 
 from collections import defaultdict
 import multiprocessing as mp
@@ -101,7 +101,7 @@ def process_file(chunks: List[Tuple[int, int]], n_cpu: int = 8):
 
     print("{", end="")
     for city, vals in sorted(db.items()):
-        print(f"{city}={vals[MIN]:.1f}/{(vals[SUM] / vals[COUNT])}/{vals[MAX]:.1f}", end=", ")
+        print(f"{city}={vals[MIN]:.1f}/{(vals[SUM] / vals[COUNT]):.1f}/{vals[MAX]:.1f}", end=", ")
     print("\b\b} ")
 
 

@@ -4,7 +4,7 @@ Visit [https://1brc.dev/](https://1brc.dev/) to know more about the challenge (o
 
 My (currently) best performing solution is heavily based on [https://github.com/ifnesi/1brc/blob/main/calculateAverage.py](https://github.com/ifnesi/1brc/blob/main/calculateAverage.py).
 
-My best score is: `143.46 s` (micro benchmark, this is measured on a single run, not a statistical sane solution).
+My best score is (check Stats section for details): [`75.59 s`] `139.09 s` (micro benchmark, this is measured on a single run, not a statistical sane solution).
 
 My system (tested on):
 
@@ -23,10 +23,11 @@ $ python --version
 
 Stats:
 
-- chunks_pool.py: `143.46` / NVIDIA AGX Orin 32Gb: `75.59 s`
+- chunks_pool.py:
+
+  * NVIDIA AGX Orin 32Gb: `75.59 s`
+  * my laptop: `139.09 s`
 
 - naive.py: `556.79 s`
 
-- naive_obj.py: `--`
-
-- prod_cons.py: `+oo` [also `+oo` RAM consumption]
+- naive_obj.py: `775.69 s`
