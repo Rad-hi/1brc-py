@@ -6,8 +6,9 @@ import multiprocessing as mp
 import time
 import os
 
-from typing import Tuple, DefaultDict, List, Union
+from utils import str2f  # Too slow
 
+from typing import Tuple, DefaultDict, List, Union
 Chunks = List[Tuple[str, int, int]]
 
 
@@ -69,6 +70,7 @@ def process_chunk(
 
             city, val = line.split(';')
             val = float(val)
+            # val = str2f(val)
 
             vals = res[city]
             if val < vals[MIN]:

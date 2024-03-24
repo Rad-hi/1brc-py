@@ -3,6 +3,8 @@
 from collections import defaultdict
 import time
 
+from utils import str2f  # Too slow
+
 from typing import DefaultDict, List
 
 
@@ -21,6 +23,7 @@ if __name__ == '__main__':
             city, val = line[:-1].split(';')
 
             val = float(val)
+            # val = str2f(val)
 
             vals = db[city]
             if val < vals[MIN]:
