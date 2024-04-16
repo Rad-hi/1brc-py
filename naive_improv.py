@@ -1,8 +1,10 @@
-# pypy: 324.22 s
-# cpython: 557.63 s
+# pypy: 161.94 s
+# cpython: 823.31 s
 
 from collections import defaultdict
 import time
+
+from utils import bytes2int
 
 from typing import DefaultDict, List
 
@@ -17,11 +19,12 @@ if __name__ == '__main__':
 
     ts: float = time.perf_counter()
 
-    with open(PATH, 'r') as f:
+    with open(PATH, 'rb') as f:
         for line in f:
-            city, val = line[:-1].split(';')
 
-            val = float(val)
+            idx = line.find(b";")
+            city = line[:idx]
+            val = bytes2int(line[idx + 1:])
 
             vals = db[city]
             if val < vals[MIN]:
@@ -33,8 +36,10 @@ if __name__ == '__main__':
             vals[COUNT] += 1
 
     print("{", end="")
+    city: bytes
+    vals: List[int]
     for city, vals in sorted(db.items()):
-        print(f"{city}={vals[MIN]:.1f}/{(vals[SUM] / vals[COUNT]):.1f}/{vals[MAX]:.1f}", end=", ")
+        print(f"{city.decode()}={0.1 * vals[MIN]:.1f}/{0.1 * (vals[SUM] / vals[COUNT]):.1f}/{0.1 * vals[MAX]:.1f}", end=", ")
     print("\b\b} ")
 
     print(f"{time.perf_counter() - ts:.2f} s")

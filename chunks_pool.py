@@ -1,12 +1,13 @@
 # Ref: https://github.com/ifnesi/1brc/blob/main/calculateAverage.py
-# 139.09 s
+# pypy: 49.59 s
+# cpython: 139.09 s
 
 from collections import defaultdict
 import multiprocessing as mp
 import time
 import os
 
-from utils import str2f  # Too slow
+from utils import bytes2int
 
 from typing import Tuple, DefaultDict, List, Union
 Chunks = List[Tuple[str, int, int]]
@@ -61,23 +62,25 @@ def process_chunk(
 
     res = defaultdict(default_list)
 
-    with open(file_path, 'r') as fp:
+    with open(file_path, 'rb') as fp:
         fp.seek(start)
         for line in fp:
             start += len(line)
             if start > end:
                 break
 
-            city, val = line.split(';')
-            val = float(val)
-            # val = str2f(val)
+            idx = line.find(b";")
+            city = line[:idx]
+
+            # Do all processing with ints, then only change to floats when printing the resutls
+            val = bytes2int(line[idx + 1:])
+            # val = int(line[idx + 1:-3] + line[-2:-1])
 
             vals = res[city]
             if val < vals[MIN]:
                 vals[MIN] = val
             elif val > vals[MAX]:
                 vals[MAX] = val
-
             vals[SUM] += val
             vals[COUNT] += 1
 
@@ -102,8 +105,10 @@ def process_file(chunks: List[Tuple[int, int]], n_cpu: int = 8):
                 city_vals[COUNT] += vals[COUNT]
 
     print("{", end="")
+    city: bytes
+    vals: List[int]
     for city, vals in sorted(db.items()):
-        print(f"{city}={vals[MIN]:.1f}/{(vals[SUM] / vals[COUNT]):.1f}/{vals[MAX]:.1f}", end=", ")
+        print(f"{city.decode()}={0.1 * vals[MIN]:.1f}/{0.1 * (vals[SUM] / vals[COUNT]):.1f}/{0.1 * vals[MAX]:.1f}", end=", ")
     print("\b\b} ")
 
 
